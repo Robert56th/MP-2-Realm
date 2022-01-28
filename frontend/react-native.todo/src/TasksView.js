@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef} from 'react';
 import Realm from 'realm';
 import {BSON} from 'realm';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, ScrollView} from 'react-native';
 import {Button, Overlay, ListItem} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {CreateToDoPrompt} from './CreateToDoPrompt';
@@ -116,50 +116,50 @@ export function TasksView({navigation}) {
 
   return (
     <SafeAreaProvider>
-      <View style={styles.viewWrapper}>
-        <Button
-          title="+ ADD TO-DO"
-          buttonStyle={styles.addToDoButton}
-          onPress={toggleCreateToDoOverlayVisible}
-        />
-        <Overlay
-          isVisible={createToDoOverlayVisible}
-          onBackdropPress={toggleCreateToDoOverlayVisible}>
-          <CreateToDoPrompt
-            setNewTaskSummary={value => {
-              toggleCreateToDoOverlayVisible();
-              createTask(value);
-            }}
-          />
-        </Overlay>
-        {tasks.map(task => (
-          <ListItem key={`${task._id}`} bottomDivider topDivider>
-            <ListItem.Title style={styles.taskTitle}>
-              {task.summary}
-            </ListItem.Title>
-            <ListItem.CheckBox
-              checked={task.isComplete}
-              onPress={() => toggleTaskIsComplete(task._id)}
+      <ScrollView>
+        <View style={styles.viewWrapper}>
+          <Overlay
+            isVisible={createToDoOverlayVisible}
+            onBackdropPress={toggleCreateToDoOverlayVisible}>
+            <CreateToDoPrompt
+              setNewTaskSummary={value => {
+                toggleCreateToDoOverlayVisible();
+                createTask(value);
+              }}
             />
-            <Button
-              type="clear"
-              icon={
-                <Icon
-                  name="times"
-                  size={12}
-                  color="#979797"
-                  onPress={() => deleteTask(task._id)}
-                />
-              }
-            />
-          </ListItem>
-        ))}
-      </View>
+          </Overlay>
+          {tasks.map(task => (
+            <ListItem key={`${task._id}`} containerStyle={{borderRadius:15, margin:15, borderWidth: 1, borderStyle:'dashed'}}>
+              <ListItem.Title style={styles.taskTitle}>
+                {task.summary}
+              </ListItem.Title>
+              <ListItem.CheckBox
+                checked={task.isComplete}
+                onPress={() => toggleTaskIsComplete(task._id)}
+              />
+              <Button
+                type="clear"
+                icon={
+                  <Icon
+                    name="times"
+                    size={12}
+                    color="#979797"
+                    onPress={() => deleteTask(task._id)}
+                  />
+                }
+              />
+            </ListItem>
+          ))}
+        </View>
+      </ScrollView>
       <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          Log in with the same account on another device or simulator to see
-          your list sync in real-time
-        </Text>
+      <TouchableOpacity
+          style={styles.addToDoButton}
+          onPress={toggleCreateToDoOverlayVisible}
+        >
+          <Text style={{fontSize:25, color:'white'}}>+</Text>
+        </TouchableOpacity>
+
       </View>
     </SafeAreaProvider>
   );
@@ -178,15 +178,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   footer: {
-    margin: 40,
+    margin: 10,
+    alignItems:'flex-end'
   },
   addToDoButton: {
-    backgroundColor: '#00BAD4',
-    width: 150,
-    borderRadius: 4,
+    backgroundColor: 'pink',
+    width: 70,
+    height:70,
+    borderRadius: 100,
     margin: 5,
+    elevation:5,
+    alignItems:'center',
+    justifyContent:'center'
   },
   taskTitle: {
-    minWidth: 275,
+    minWidth: 250,
   },
 });

@@ -11,7 +11,7 @@ export function CreateToDoPrompt(props) {
   const [toDoSummary, setToDoSummary] = useState(null);
   return (
     <View style={styles.modalWrapper}>
-      <Text h4 style={styles.addTaskTitle}>
+      <Text style={styles.addTaskTitle}>
         Add Task
       </Text>
       <Input placeholder="New Task Summary" onChangeText={setToDoSummary} />
@@ -27,15 +27,20 @@ export function CreateToDoPrompt(props) {
 const styles = StyleSheet.create({
   modalWrapper: {
     width: 300,
-    minHeight: 400,
+    minHeight: 320,
     borderRadius: 4,
     alignItems: 'center',
   },
   addTaskTitle: {
     margin: 20,
+    fontSize: 18,
+    fontWeight: 'bold'
   },
 
   saveButton: {
-    width: 280,
+    width: 220,
+    height:48,
+    backgroundColor:'pink',
+    borderRadius:30
   },
 });
